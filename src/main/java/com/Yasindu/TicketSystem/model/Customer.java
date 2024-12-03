@@ -18,32 +18,37 @@ public class Customer implements Runnable{
 
     @Override
     public void run(){
-        for (int i = 0; i < retrievalLimit; i++){
-            try{
-                synchronized (ticketpool){
-                    if (ticketpool.getAvailableTickets() == 0) {
-                        String logMessage = Thread.currentThread().getName() + ": No tickets available. Waiting";
+        for (int i = 0; i < retrievalLimit; i++) {
+            try {
+                synchronized (ticketpool) {
+                    while (ticketpool.getAvailableTickets() == 0) {
+                        String logMessage = Thread.currentThread().getName() + ": No tickets available. Waiting.";
                         logger.info(logMessage);
                         logService.addLog(logMessage);
+                        ticketpool.wait(); // Wait for tickets to be added
                     }
 
                     String ticket = ticketpool.removeTicket();
-                    String logMessage = Thread.currentThread().getName() + ": Customer interrupted";
+                    String logMessage = Thread.currentThread().getName() + ": Retrieved " + ticket;
                     logger.info(logMessage);
                     logService.addLog(logMessage);
+
+                    ticketpool.notifyAll(); // Notify vendors to add more tickets
                 }
-                Thread.sleep(200);
-            }
-            catch (InterruptedException e) {
+
+                Thread.sleep(200); // Simulate delay in ticket retrieval
+            } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
-                String logMessage = Thread.currentThread().getName() + ": Customer interrupted";
-                logger. error(logMessage, e);
+                String logMessage = Thread.currentThread().getName() + ": Customer interrupted.";
+                logger.error(logMessage, e);
                 logService.addLog(logMessage);
                 break;
             }
         }
+
         String logMessage = Thread.currentThread().getName() + ": Finished purchasing tickets.";
         logger.info(logMessage);
         logService.addLog(logMessage);
     }
+
 }

@@ -39,6 +39,8 @@ public class Ticketpool {
         String logMessage = "Removed ticket: " + ticket;
         logger.info(logMessage);
         logService.addLog(logMessage);
+
+        notifyAll(); //Notify vendors to check if they can add more tickets
         return ticket;
 
 

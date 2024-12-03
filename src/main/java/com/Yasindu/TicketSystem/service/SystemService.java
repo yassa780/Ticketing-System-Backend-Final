@@ -31,7 +31,7 @@ public class SystemService {
         return configRepository.findAll().stream().findFirst();
     }
 
-    private void clearConfig() {
+    public void clearConfig() {
         configRepository.deleteAll();
     }
 
