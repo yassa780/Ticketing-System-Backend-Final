@@ -23,23 +23,26 @@ public class ThreadService {
     public void configure(SystemConfiguration config, Ticketpool ticketpool){
         threads.clear();
 
-        int ticketsPerVendor = config.getTicketReleaseRate();
-        int retrievalRatePerCustomer = config.getCustomerRetrievalRate();
+        int ticketReleaseRate = config.getTicketReleaseRate();
+        int customerRetrievalRate = config.getCustomerRetrievalRate();
+        int maxCapacity = config.getMaxTicketCapacity();
 
         //Create vendor Threads
         for(int i = 0; i < config.getNumberOfVendors(); i++) {
-            threads.add(new Thread(
-                    new Vendor(ticketpool, ticketsPerVendor, config.getMaxTicketCapacity(), logService),
+            Thread vendorThread = new Thread(
+                    new Vendor(ticketpool, ticketReleaseRate, maxCapacity, logService),
                     "Vendor-" + (i + 1)
-            ));
+            );
+            threads.add(vendorThread);
         }
 
         //The customer threads
         for (int i = 0; i < config.getNumberOfCustomers(); i++){
-            threads.add(new Thread(
-                    new Customer(ticketpool, retrievalRatePerCustomer, logService),
+            Thread customerThread = new Thread(
+                    new Customer(ticketpool, customerRetrievalRate, logService),
                     "Customer-" + (i + 1)
-            ));
+            );
+            threads.add(customerThread);
         }
         logService.addLog("System configured with " + config.getNumberOfVendors() + " vendors and " + config.getNumberOfCustomers() + " customers.");
     }

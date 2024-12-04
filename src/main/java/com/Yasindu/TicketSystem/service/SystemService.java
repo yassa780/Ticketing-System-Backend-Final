@@ -37,7 +37,9 @@ public class SystemService {
 
     public void startSystem(Optional<SystemConfiguration> config, Ticketpool ticketpool) {
         if (config.isPresent()) {
-            threadService.configure(config.get(), ticketpool);
+            SystemConfiguration configuration = config.get();
+            ticketpool.setSellingComplete(false); //Ensure that the ticket selling is reset
+            threadService.configure(configuration, ticketpool); //Configure the threads
             threadService.startThreads();
         }
         else{

@@ -7,48 +7,37 @@ import org.slf4j.LoggerFactory;
 public class Customer implements Runnable{
     private static final Logger logger = LoggerFactory.getLogger(Customer.class);
     private final Ticketpool ticketpool;
-    private final int retrievalLimit;
+    private final int customerRetrievalRate;
     private final LogService logService;
 
-    public Customer(Ticketpool ticketpool, int retrievalLimit, LogService logService){
+    public Customer(Ticketpool ticketpool, int customerRetrievalRate, LogService logService){
         this.ticketpool = ticketpool;
-        this.retrievalLimit = retrievalLimit;
+        this.customerRetrievalRate = customerRetrievalRate;
         this.logService = logService;
     }
 
     @Override
-    public void run(){
-        for (int i = 0; i < retrievalLimit; i++) {
-            try {
-                synchronized (ticketpool) {
-                    while (ticketpool.getAvailableTickets() == 0) {
-                        String logMessage = Thread.currentThread().getName() + ": No tickets available. Waiting.";
-                        logger.info(logMessage);
-                        logService.addLog(logMessage);
-                        ticketpool.wait(); // Wait for tickets to be added
+    public void run() {
+        try{
+            while(!ticketpool.isSellingComplete() || ticketpool.getAvailableTickets() > 0){
+                synchronized (ticketpool){
+                    String ticket = ticketpool.removeTicket();
+                    if (ticket == null) {
+                        break;
                     }
 
-                    String ticket = ticketpool.removeTicket();
-                    String logMessage = Thread.currentThread().getName() + ": Retrieved " + ticket;
-                    logger.info(logMessage);
-                    logService.addLog(logMessage);
-
-                    ticketpool.notifyAll(); // Notify vendors to add more tickets
+                    logService.addLog(Thread.currentThread().getName() + ": Retrieval ticket " + ticket);
+                    logger.info(Thread.currentThread().getName() + ": Retrievd ticket" + ticket);
                 }
 
-                Thread.sleep(200); // Simulate delay in ticket retrieval
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-                String logMessage = Thread.currentThread().getName() + ": Customer interrupted.";
-                logger.error(logMessage, e);
-                logService.addLog(logMessage);
-                break;
+                Thread.sleep(300); //Stimulate retrieval delay
             }
         }
+        catch (InterruptedException e){
+            Thread.currentThread().interrupt();
+            logService.addLog(Thread.currentThread().getName() + ": Customer interrupted.");
+            logger.error(Thread.currentThread().getName() + ": Customer interrupted.", e);
+        }
 
-        String logMessage = Thread.currentThread().getName() + ": Finished purchasing tickets.";
-        logger.info(logMessage);
-        logService.addLog(logMessage);
     }
-
 }
