@@ -31,6 +31,9 @@ public class SystemController {
         systemService.clearConfig();
         SystemConfiguration savedConfig = systemService.saveConfiguration(config);
 
+        //Clear logs during reconfiguration
+        logService.clearLogs();
+
         // Construct the response to include ticketsAvailable (totalTickets)
         Map<String, Object> response = new HashMap<>();
         response.put("ticketsAvailable", savedConfig.getTotalTickets());
