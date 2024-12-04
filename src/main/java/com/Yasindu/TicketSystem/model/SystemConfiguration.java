@@ -11,6 +11,7 @@ public class SystemConfiguration {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String eventName;
     private int totalTickets;
     private int ticketReleaseRate;
     private int customerRetrievalRate;
@@ -24,8 +25,9 @@ public class SystemConfiguration {
 
     }
 
-    public SystemConfiguration(Long id, int totalTickets, int ticketReleaseRate, int customerRetrievalRate, int maxTicketCapacity, int numberOfVendors, int numberOfCustomers, boolean active) {
+    public SystemConfiguration(Long id, String eventName, int totalTickets, int ticketReleaseRate, int customerRetrievalRate, int maxTicketCapacity, int numberOfVendors, int numberOfCustomers, boolean active) {
         this.id = id;
+        this.eventName = eventName;
         this.totalTickets = totalTickets;
         this.ticketReleaseRate = ticketReleaseRate;
         this.customerRetrievalRate = customerRetrievalRate;
@@ -97,6 +99,14 @@ public class SystemConfiguration {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public String getEventName() {
+        return eventName;
+    }
+
+    public void setEventName(String eventName) {
+        this.eventName = eventName;
     }
 
     @Override
