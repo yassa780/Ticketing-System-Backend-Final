@@ -7,8 +7,6 @@ import java.util.Collections;
 import java.util.List;
 
 @Service
-
-
 public class LogService {
 
     private final List<String> logs = Collections.synchronizedList(new ArrayList<>());

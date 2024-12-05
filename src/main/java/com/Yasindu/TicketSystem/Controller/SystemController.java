@@ -13,6 +13,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * REST Controller to handle system configuration, start/stop operations, and log management
+ */
 @RestController
 @RequestMapping("/api")
 public class SystemController {
@@ -20,11 +23,23 @@ public class SystemController {
     private final Ticketpool ticketpool;
     private final LogService logService; // Inject LogService
 
+    /**
+     * The constructor to inject required services and components
+     * @param systemService
+     * @param ticketpool
+     * @param logService
+     */
     public SystemController(SystemService systemService, Ticketpool ticketpool, LogService logService) {
         this.systemService = systemService;
         this.ticketpool = ticketpool;
         this.logService = logService;
     }
+
+    /**
+     * Configures the system with provided parameters and clears existing logs
+     * @param config . Config the system configuration details sent in the request body
+     * @return a response containing the total tickets available
+     */
 
     @PostMapping("/config")
     public ResponseEntity<Map<String, Object>> configureSystem(@RequestBody @Valid SystemConfiguration config){
@@ -34,7 +49,7 @@ public class SystemController {
         //Clear logs during reconfiguration
         logService.clearLogs();
 
-        // Construct the response to include ticketsAvailable (totalTickets)
+        // Constructs the response to include ticketsAvailable (totalTickets)
         Map<String, Object> response = new HashMap<>();
         response.put("ticketsAvailable", savedConfig.getTotalTickets());
 
@@ -44,12 +59,23 @@ public class SystemController {
         return ResponseEntity.ok(response);
     }
 
+    /**
+     * Retrieves the current system configuration.
+     * @return the active configuration or a 404 if none exists
+     */
+
     @GetMapping("/config")
     public ResponseEntity<SystemConfiguration> getConfig() {
         return systemService.getConfig()
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
+
+    /**
+     * Starts the system if a valid configuration exists.
+     *
+     * @return a response indicating success or a 400 error if no configuration is found
+     */
 
     @PostMapping("/start")
     public ResponseEntity<String> startSystem() {
@@ -65,6 +91,11 @@ public class SystemController {
         return ResponseEntity.ok("System started successfully!");
     }
 
+    /**
+     * Stops the system and logs the action
+     *
+     * @return a response indicating success
+     */
     @PostMapping("/stop")
     public ResponseEntity<String> stopSystem() {
         systemService.stopSystem();
@@ -75,13 +106,22 @@ public class SystemController {
         return ResponseEntity.ok("System stopped successfully!");
     }
 
-    // The API endpoint to fetch logs
+    /**
+     * Fetches the list of logs.
+     *
+     * @return a list of log entires
+     */
     @GetMapping("/logs")
     public ResponseEntity<List<String>> getLogs() {
         List<String> logs = logService.getLogs();
         return ResponseEntity.ok(logs);
     }
 
+    /**
+     * Clears all the logs from the system
+     *
+     * @return a response indicating success
+     */
     @DeleteMapping("/logs")
     public ResponseEntity<String> clearLogs() {
         logService.clearLogs();
