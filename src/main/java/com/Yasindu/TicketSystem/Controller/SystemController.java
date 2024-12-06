@@ -20,18 +20,18 @@ import java.util.Optional;
 @RequestMapping("/api")
 public class SystemController {
     private final SystemService systemService;
-    private final Ticketpool ticketpool;
+
     private final LogService logService; // Inject LogService
+    private  Ticketpool ticketpool;
 
     /**
      * The constructor to inject required services and components
      * @param systemService
-     * @param ticketpool
+
      * @param logService
      */
-    public SystemController(SystemService systemService, Ticketpool ticketpool, LogService logService) {
+    public SystemController(SystemService systemService, LogService logService) {
         this.systemService = systemService;
-        this.ticketpool = ticketpool;
         this.logService = logService;
     }
 
@@ -48,6 +48,9 @@ public class SystemController {
 
         //Clear logs during reconfiguration
         logService.clearLogs();
+
+        // Create a new Ticketpool instance dynamically with the provided configuration
+        this.ticketpool = new Ticketpool(logService, config);
 
         // Constructs the response to include ticketsAvailable (totalTickets)
         Map<String, Object> response = new HashMap<>();

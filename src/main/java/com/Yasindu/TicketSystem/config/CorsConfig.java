@@ -32,7 +32,7 @@ public class CorsConfig {
          * In this case, the React frontend running on the URL below
          * The URL can be change according to the port it is being runned on
          */
-        config.setAllowedOrigins(Arrays.asList("http://localhost:5174"));
+        config.setAllowedOrigins(Arrays.asList("http://localhost:5173"));
 
         //Allow all HTTP Methods (GET, POST, PUT, DELETE, etc.)
         config.addAllowedMethod("*");

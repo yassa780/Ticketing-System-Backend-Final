@@ -23,14 +23,11 @@ public class ThreadService {
     public void configure(SystemConfiguration config, Ticketpool ticketpool){
         threads.clear();
 
-        int ticketReleaseRate = config.getTicketReleaseRate();
-        int customerRetrievalRate = config.getCustomerRetrievalRate();
-        int maxCapacity = config.getMaxTicketCapacity();
 
         //Create vendor Threads
         for(int i = 0; i < config.getNumberOfVendors(); i++) {
             Thread vendorThread = new Thread(
-                    new Vendor(ticketpool, ticketReleaseRate, maxCapacity, logService),
+                    new Vendor(ticketpool, config, logService),
                     "Vendor-" + (i + 1)
             );
             threads.add(vendorThread);
@@ -39,7 +36,7 @@ public class ThreadService {
         //The customer threads
         for (int i = 0; i < config.getNumberOfCustomers(); i++){
             Thread customerThread = new Thread(
-                    new Customer(ticketpool, customerRetrievalRate, logService),
+                    new Customer(ticketpool, config, logService),
                     "Customer-" + (i + 1)
             );
             threads.add(customerThread);

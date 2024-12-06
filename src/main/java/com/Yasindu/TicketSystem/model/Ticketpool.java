@@ -9,20 +9,23 @@ import org.springframework.stereotype.Component;
 import java.util.LinkedList;
 import java.util.Queue;
 
-@Component
+
 public class Ticketpool {
 
     private static final Logger logger = LoggerFactory.getLogger(Ticketpool.class);
     private final Queue<String> tickets = new LinkedList<>();
     private final int maxCapacity;
-    private boolean sellingComplete = false;
 
-    @Autowired
+    private boolean sellingComplete = false;
+    private int totalTicketsRemaining;
     private final LogService logService; //Inject the LogService
 
-    public Ticketpool(LogService logService){
+
+
+    public Ticketpool(LogService logService, SystemConfiguration config){
         this.logService = logService;
-        this.maxCapacity = Integer.MAX_VALUE;
+        this.maxCapacity = config.getMaxTicketCapacity();
+        this.totalTicketsRemaining = config.getTotalTickets();
     }
 
     public synchronized void addTicket(int numberOfTickets) {
@@ -43,6 +46,8 @@ public class Ticketpool {
            for(int i = 0; i < numberOfTickets; i++){
                tickets.add("Ticket - " + System.nanoTime());
            }
+
+           totalTicketsRemaining -= ticketsToAdd;
            logService.addLog(numberOfTickets + " tickets added. Total: " + tickets.size());
            logger.info(numberOfTickets + " tickets added. Total: " + tickets.size());
            notifyAll();

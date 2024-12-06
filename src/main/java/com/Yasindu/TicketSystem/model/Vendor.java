@@ -11,10 +11,10 @@ public class Vendor implements Runnable {
     private final int maxCapacity;
     private final LogService logService;
 
-    public Vendor(Ticketpool ticketpool, int ticketReleaseRate, int maxCapacity, LogService logService){
+    public Vendor(Ticketpool ticketpool, SystemConfiguration config, LogService logService){
         this.ticketpool = ticketpool;
-        this.ticketReleaseRate = ticketReleaseRate;
-        this.maxCapacity = maxCapacity;
+        this.ticketReleaseRate = config.getTicketReleaseRate();
+        this.maxCapacity = config.getMaxTicketCapacity();
         this.logService = logService;
     }
 

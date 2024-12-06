@@ -10,9 +10,9 @@ public class Customer implements Runnable{
     private final int customerRetrievalRate;
     private final LogService logService;
 
-    public Customer(Ticketpool ticketpool, int customerRetrievalRate, LogService logService){
+    public Customer(Ticketpool ticketpool, SystemConfiguration config, LogService logService){
         this.ticketpool = ticketpool;
-        this.customerRetrievalRate = customerRetrievalRate;
+        this.customerRetrievalRate = config.getCustomerRetrievalRate();
         this.logService = logService;
     }
 
