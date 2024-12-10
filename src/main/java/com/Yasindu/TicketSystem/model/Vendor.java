@@ -4,12 +4,22 @@ import com.Yasindu.TicketSystem.service.LogService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * This class represents a vendor in the ticketing system responsible for adding tickets to the ticketpool
+ * The vendor operates as a seperate thread and continuously adds tickets to the pool until isSelling is completed
+ */
 public class Vendor implements Runnable {
     private static final Logger logger = LoggerFactory.getLogger(Vendor.class);
     private final Ticketpool ticketpool;
     private final int ticketReleaseRate;
     private final LogService logService;
 
+    /**
+     *
+     * @param ticketpool
+     * @param config
+     * @param logService
+     */
     public Vendor(Ticketpool ticketpool, SystemConfiguration config, LogService logService) {
         this.ticketpool = ticketpool;
         this.ticketReleaseRate = config.getTicketReleaseRate();

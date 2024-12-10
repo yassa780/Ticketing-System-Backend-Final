@@ -7,18 +7,35 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+/**
+ * Service class for managing the system configuration and operations
+ * This class handles saving, retrieving, clearing configurations and starting/ stopping
+ * the ticketing system by managing thread operations
+ */
 @Service
 public class SystemService {
 
+    //Repository for storing and managing system configuration in the database
     private final SystemConfigRepository configRepository;
-    private final ThreadService threadService;
+    private final ThreadService threadService; //Service for managing threads for vendors and customers
 
+    /**
+     *
+     * @param configRepository
+     * @param threadService
+     */
     public SystemService(SystemConfigRepository configRepository, ThreadService threadService) {
         this.configRepository = configRepository;
         this.threadService = threadService;
     }
 
-    //Saving the system configuration to the database
+    /**
+     * Saves a new system configuration to the database
+     *
+     * Clears any existing configuration to ensure only one active configuration is allowed
+     * @param config The system configuration saved
+     * @return The saved system configuration
+     */
     public SystemConfiguration saveConfiguration(SystemConfiguration config) {
         //Clear the existing configuration to allow only one active configuration
 
@@ -31,10 +48,20 @@ public class SystemService {
         return configRepository.findAll().stream().findFirst();
     }
 
+    /**
+     * Clears all the system configurations from the database, this ensures only
+     * one configuration can be active at a time
+     */
+
     public void clearConfig() {
         configRepository.deleteAll();
     }
 
+    /**
+     * Starts the ticketing system usimg the active configuration and ticket pool
+     * @param config
+     * @param ticketpool
+     */
     public void startSystem(Optional<SystemConfiguration> config, Ticketpool ticketpool) {
         if (config.isPresent()) {
             SystemConfiguration configuration = config.get();
@@ -47,6 +74,7 @@ public class SystemService {
         }
     }
 
+    //Stops the ticketing system by stopping all the active threads
     public void stopSystem() {
         threadService.stopThreads();
     }

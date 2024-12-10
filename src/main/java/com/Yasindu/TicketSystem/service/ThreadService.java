@@ -9,17 +9,29 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Service class for managing the lifecycle of threads for vendors and customers
+ * This service creates, starts and stops threads based on the system configuration
+ */
 @Service
 public class ThreadService {
 
-    private final LogService logService; //Injecting the LogService
-    private List<Thread> threads = new ArrayList<>();
-    private volatile boolean running = false;
+    // Service for logging thread-related activities
+    private final LogService logService;
+
+    private List<Thread> threads = new ArrayList<>(); //List of threads for vendors and customers
+    private volatile boolean running = false; //Flag to track whether threads are currently running
 
     public ThreadService(LogService logService) {
         this.logService = logService;
     }
 
+    /**
+     * Configures the system by creating threads for vendors and customers
+     *
+     * @param config
+     * @param ticketpool
+     */
     public void configure(SystemConfiguration config, Ticketpool ticketpool){
         threads.clear();
 

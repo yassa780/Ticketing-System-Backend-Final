@@ -5,6 +5,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
+/**
+ * This is my model class, these are the parameters which are stored in my h2 database
+ */
 @Entity
 public class SystemConfiguration {
 
@@ -24,6 +27,19 @@ public class SystemConfiguration {
     public SystemConfiguration() {
 
     }
+
+    /**
+     *
+     * @param id
+     * @param eventName
+     * @param totalTickets
+     * @param ticketReleaseRate
+     * @param customerRetrievalRate
+     * @param maxTicketCapacity
+     * @param numberOfVendors
+     * @param numberOfCustomers
+     * @param active
+     */
 
     public SystemConfiguration(Long id, String eventName, int totalTickets, int ticketReleaseRate, int customerRetrievalRate, int maxTicketCapacity, int numberOfVendors, int numberOfCustomers, boolean active) {
         this.id = id;
