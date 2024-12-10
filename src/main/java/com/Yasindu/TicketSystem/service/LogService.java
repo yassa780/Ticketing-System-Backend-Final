@@ -16,7 +16,7 @@ public class LogService {
     }
 
     public List <String> getLogs() {
-        return new ArrayList<>(logs); //Returuns a copy to avoid concurrent modification
+        return new ArrayList<>(logs); //Returns a copy to avoid concurrent modification
     }
 
     public void clearLogs() {

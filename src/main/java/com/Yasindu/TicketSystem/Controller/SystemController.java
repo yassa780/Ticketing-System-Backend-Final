@@ -14,7 +14,14 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
- * REST Controller to handle system configuration, start/stop operations, and log management
+ * REST Controller to manage system configuration, start/stop operations, and log management.
+ * <p>
+ * This controller provides endpoints to:
+ * <ul>
+ *     <li>Configure the ticketing system</li>
+ *     <li>Start and stop the system</li>
+ *     <li>Manage logs</li>
+ * </ul>
  */
 @RestController
 @RequestMapping("/api")
@@ -25,10 +32,10 @@ public class SystemController {
     private  Ticketpool ticketpool;
 
     /**
-     * The constructor to inject required services and components
-     * @param systemService
+     * The constructor to initialize required services and components
+     * @param systemService Service for system operations
 
-     * @param logService
+     * @param logService Service for logging operations
      */
     public SystemController(SystemService systemService, LogService logService) {
         this.systemService = systemService;
@@ -38,7 +45,7 @@ public class SystemController {
     /**
      * Configures the system with provided parameters and clears existing logs
      * @param config . Config the system configuration details sent in the request body
-     * @return a response containing the total tickets available
+     * @return A {@link ResponseEntity} containing a map with the total tickets available
      */
 
     @PostMapping("/config")
@@ -64,8 +71,8 @@ public class SystemController {
 
     /**
      * Retrieves the current system configuration.
-     * @return the active configuration or a 404 if none exists
-     */
+     * @return  A {@link ResponseEntity} containing the active configuration, or 404 if none exists.*/
+
 
     @GetMapping("/config")
     public ResponseEntity<SystemConfiguration> getConfig() {
@@ -77,7 +84,7 @@ public class SystemController {
     /**
      * Starts the system if a valid configuration exists.
      *
-     * @return a response indicating success or a 400 error if no configuration is found
+     * @return A {@link ResponseEntity} containing a success message or a 400 error if no configuration is found
      */
 
     @PostMapping("/start")
@@ -97,7 +104,7 @@ public class SystemController {
     /**
      * Stops the system and logs the action
      *
-     * @return a response indicating success
+     * @return A {@link ResponseEntity} containing a success message
      */
     @PostMapping("/stop")
     public ResponseEntity<String> stopSystem() {
@@ -112,7 +119,7 @@ public class SystemController {
     /**
      * Fetches the list of logs.
      *
-     * @return a list of log entires
+     * @return A {@link ResponseEntity} containing a list of log entries}
      */
     @GetMapping("/logs")
     public ResponseEntity<List<String>> getLogs() {
@@ -121,10 +128,11 @@ public class SystemController {
     }
 
     /**
-     * Clears all the logs from the system
+     * Clears all logs from the system.
      *
-     * @return a response indicating success
+     * @return A {@link ResponseEntity} containing a success message
      */
+
     @DeleteMapping("/logs")
     public ResponseEntity<String> clearLogs() {
         logService.clearLogs();

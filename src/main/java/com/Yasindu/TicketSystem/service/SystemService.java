@@ -50,7 +50,4 @@ public class SystemService {
     public void stopSystem() {
         threadService.stopThreads();
     }
-
-
-
 }
