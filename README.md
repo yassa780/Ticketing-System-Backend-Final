@@ -34,4 +34,8 @@ Backend: Spring Boot
 Threading: Java threads for vendor and customer operations
 Database: H2 (in-memory)
 
+INSTALLATION
+
+
+
 
