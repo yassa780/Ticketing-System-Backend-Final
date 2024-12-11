@@ -40,12 +40,34 @@ INSTALLATION
      cd Ticketing-System-Backend-Final
 
 2. Build the project
-   - Enter this in the terminal = mvn clean install
+    - Open the project in your IDE, intellij is more preferable
 
 3. Run the application
-    - mvn spring-boot:run
+    - Run the file YasinduApplication.java
       
 4. Open your brower and navigate to http://localhost:9095/h2-console.
+
+API endpoints
+1. Configure the system
+   POST /api/config
+    - Sets up the system by sending configuration details like the total tickets, number of vendor and customers.
+
+2. Current Configuration
+   GET /api/config
+    - Retrieves the current system configuration
+    - It returns the active configuration, or a 404 Not Found if no configuration is found
+
+ 3. Start the System
+    POST /api/start
+     - Starts the system based on the existing configuration
+     - It returns a success message if the system starts properyl or an error message if no configuration is found.
+ 4. Stop the Systen
+    POST /api/stop
+     - Stops the system operations
+     - This enpoint stops all ticketing activities
+ 5. Get Logs
+    GET /api/logs
+     - Retrieves the system's log entires
 
 Contact Information
 Name - Yasindu Mallawaarachchi
