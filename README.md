@@ -1,4 +1,4 @@
-#Real Time Ticketing Event System 
+Real Time Ticketing Event System 
 
 OVERVIEW
 The Real-Time Event Ticketing System is a Spring Boot-based backend application designed to simulate a concurrent ticketing system. 
