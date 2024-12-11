@@ -35,6 +35,23 @@ Threading: Java threads for vendor and customer operations
 Database: H2 (in-memory)
 
 INSTALLATION
+1. Clone the repository
+   - git clone https://github.com/yassa780/Ticketing-System-Backend-Final.git
+     cd Ticketing-System-Backend-Final
+
+2. Build the project
+   - Enter this in the terminal = mvn clean install
+
+3. Run the application
+    - mvn spring-boot:run
+      
+4. Open your brower and navigate to http://localhost:9095/h2-console.
+
+Contact Information
+Name - Yasindu Mallawaarachchi
+Email - yasindu.20231053@iit.ac.lk
+Github Profile - yassa780
+     
 
 
 
